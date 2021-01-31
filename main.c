@@ -1,6 +1,9 @@
 #include "uart.h"
 #include "mbox.h"
 #include "rand.h"
+#include "delays.h"
+
+void wait_demo();
 
 void demo_uart() {
     // set up serial console
@@ -30,6 +33,9 @@ void main() {
 
     mbox[7] = MBOX_TAG_LAST;            // Specify end of tag list
 
+
+    wait_demo();
+
     /* Send the message to the GPU and receive answer */
     if (mbox_call(MBOX_CH_PROP)) {
         pl011_uart_puts("My serial number is: ");
@@ -48,5 +54,23 @@ void main() {
         pl011_uart_puts("\nAlso have a random number:");
         pl011_uart_hex(rand(0,42949));
         pl011_uart_puts("\n");
+    }
+}
+
+void wait_demo() {
+    pl011_uart_puts("Waiting 1000000 CPU cycles (ARM CPU)");
+    wait_cycles(1000000);
+    pl011_uart_puts("OK\n");
+
+    pl011_uart_puts("Waiting 1000000 microsecs (ARM CPU)");
+    wait_cycles(1000000);
+    pl011_uart_puts("OK\n");
+
+    pl011_uart_puts("Waiting 1000000 microsecs (ARM CPU)");
+    if (get_system_timer() == 0) {
+        pl011_uart_puts("Not available\n");
+    } else {
+        wait_msec_st(1000000);
+        pl011_uart_puts("OK\n");
     }
 }
