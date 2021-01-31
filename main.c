@@ -3,20 +3,20 @@
 
 void demo_uart() {
     // set up serial console
-    uart_init();
+    pl011_uart_init();
 
     // say hello
-    uart_puts("Hello World!");//ello World!\n");
+    pl011_uart_puts("Hello World!");//ello World!\n");
 
     // echo everything back
     while(1) {
-        uart_send(uart_getc());
+        pl011_uart_send(pl011_uart_getc());
     }
 }
 
 void main() {
     // Set up a serial console
-    uart_init();
+    pl011_uart_init();
 
     // Get the board's unique serial number with a mailbox call
     mbox[0] = 8*4;                      // Length of the message
@@ -31,16 +31,16 @@ void main() {
 
     /* Send the message to the GPU and receive answer */
     if (mbox_call(MBOX_CH_PROP)) {
-        uart_puts("My serial number is: ");
-        uart_hex(mbox[6]);
-        uart_hex(mbox[5]);
-        uart_puts("\n");
+        pl011_uart_puts("My serial number is: ");
+        pl011_uart_hex(mbox[6]);
+        pl011_uart_hex(mbox[5]);
+        pl011_uart_puts("\n");
     } else {
-        uart_puts("Unable to query serial!\n");
+        pl011_uart_puts("Unable to query serial!\n");
     }
 
     /* Echo everything back like a terminal */
     while(1) {
-        uart_send(uart_getc());
+        pl011_uart_send(pl011_uart_getc());
     }
 }
