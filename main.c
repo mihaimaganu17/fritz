@@ -1,5 +1,6 @@
 #include "uart.h"
 #include "mbox.h"
+#include "rand.h"
 
 void demo_uart() {
     // set up serial console
@@ -39,8 +40,13 @@ void main() {
         pl011_uart_puts("Unable to query serial!\n");
     }
 
+    /* Set up random number generator*/
+    rand_init();
     /* Echo everything back like a terminal */
     while(1) {
         pl011_uart_send(pl011_uart_getc());
+        pl011_uart_puts("\nAlso have a random number:");
+        pl011_uart_hex(rand(0,42949));
+        pl011_uart_puts("\n");
     }
 }
