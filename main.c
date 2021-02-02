@@ -2,6 +2,8 @@
 #include "mbox.h"
 #include "rand.h"
 #include "delays.h"
+#include "power.h"
+#include "lfb.h"
 
 void wait_demo();
 
@@ -46,14 +48,17 @@ void main() {
         pl011_uart_puts("Unable to query serial!\n");
     }
 
-    /* Set up random number generator*/
-    rand_init();
+    lfb_init();
+    lfb_showpicture();
+
+    char c;
     /* Echo everything back like a terminal */
     while(1) {
-        pl011_uart_send(pl011_uart_getc());
-        pl011_uart_puts("\nAlso have a random number:");
-        pl011_uart_hex(rand(0,42949));
-        pl011_uart_puts("\n");
+        pl011_uart_puts("1 - power off\n 2 -reset\n");
+        c = pl011_uart_getc();
+        pl011_uart_send(c);
+        if (c == '1') power_off();
+        if (c == '2') reset();
     }
 }
 
