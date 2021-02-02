@@ -31,7 +31,16 @@ extern volatile unsigned int mbox[36];
  * - Y = which type of commmand it is (0=get, 4=test, 8=set)
  * - ZZZ is the specific command */
 #define MBOX_TAG_GETSERIAL      0x10004
+#define MBOX_TAG_SETPOWER       0x28001
 #define MBOX_TAG_LAST           0
 #define MBOX_TAG_CLKRATE        0x38002
+
+#define MBOX_TAG_SET_PHYS_WH    0x48003
+#define MBOX_TAG_SET_VIRT_WH    0x48004
+#define MBOX_TAG_SET_VIRT_OFF   0x48009
+#define MBOX_TAG_SET_DEPTH      0x48005
+#define MBOX_TAG_SET_PIX_ORD    0x48006
+#define MBOX_TAG_ALLOC_BUFF     0x40001
+#define MBOX_TAG_GET_PITCH      0x40008
 
 int mbox_call(unsigned char ch);
